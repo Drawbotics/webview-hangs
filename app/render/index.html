@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Webview Hangs</title>
+    <style type="text/css">
+      html, body {
+        height: 100%;
+        font-size: 14px;
+      }
+      #root {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .webview {
+        width: 100%;
+        height: 100%;
+        flex: 1;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <button id="interact">Interact</button>
+      <webview
+        id="webview"
+        class="webview"
+        src="https://www.google.com" />
+    </div>
+    <script type="text/javascript">
+      const path = require('path');
+      const url = require('url');
+
+      const localUrl = `file://${url.format(path.resolve(__dirname, 'redirected.html'))}`;
+      const webview = document.getElementById('webview');
+      const interact = document.getElementById('interact');
+
+      webview.addEventListener('dom-ready', () => {
+        if (webview.getURL() === localUrl) {
+          return;
+        }
+        webview.openDevTools();
+        webview.loadURL(localUrl);
+        console.log(webview.getURL());
+      });
+
+      interact.addEventListener('click', () => {
+        console.log(webview.getURL());
+      });
+    </script>
+  </body>
+</html>
