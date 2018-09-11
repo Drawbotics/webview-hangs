@@ -38,11 +38,6 @@
       const interact = document.getElementById('interact');
 
       webview.addEventListener('dom-ready', () => {
-        if (webview.getURL() === localUrl) {
-          return;
-        }
-        webview.openDevTools();
-        webview.loadURL(localUrl);
         console.log(webview.getURL());
       });
 
